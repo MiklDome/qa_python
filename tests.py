@@ -1,3 +1,4 @@
+import pytest
 
 from main import BooksCollector
 
@@ -24,64 +25,61 @@ class TestBooksCollector:
     # напиши свои тесты ниже
     # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
 
+    @pytest.fixture
+    def collector(self):
+        return BooksCollector()
+
 
     # Тесты для add_new_book
-    def test_add_new_book_success(self):
-        collector = BooksCollector()
+    def test_add_new_book_success(collector):
         collector.add_new_book("Война и мир")
         assert "Война и мир" in collector.books_genre
 
 
-    def test_add_new_book_empty_genre(self):
-        collector = BooksCollector()
+    def test_add_new_book_empty_genre(collector):
         collector.add_new_book("Война и мир")
         assert collector.books_genre["Война и мир"] == ""
 
 
-    def test_add_existing_book(self):
-        collector = BooksCollector()
+    def test_add_existing_book(collector):
         collector.add_new_book("Война и мир")
         collector.add_new_book("Война и мир")
         assert len(collector.books_genre) == 1
 
 
-    def test_add_long_book_name(self):
-        collector = BooksCollector()
+    def test_add_long_book_name(collector):
         long_name = "A" * 41
         assert not collector.add_new_book(long_name)
 
 
     # Тесты для set_book_genre
-    def test_set_genre_success(self):
-        collector = BooksCollector()
+    def test_set_genre_success(collector):
         collector.add_new_book("Американские боги")
         collector.set_book_genre("Американские боги", "Фантастика")
         assert collector.books_genre["Американские боги"] == "Фантастика"
 
 
-    def test_set_invalid_genre(self):
-        collector = BooksCollector()
+    def test_set_invalid_genre(collector):
         collector.add_new_book("Американские боги")
         collector.set_book_genre("Американские боги", "Ужастики")
         assert collector.books_genre["Американские боги"] == ""
 
 
     # Тесты для get_book_genre
-    def test_get_genre_success(self):
-        collector = BooksCollector()
+    def test_get_book_genre_success(collector):
         collector.add_new_book("Лунный камень")
         collector.set_book_genre("Лунный камень", "Детективы")
         assert collector.get_book_genre("Лунный камень") == "Детективы"
 
 
-    def test_get_genre_non_existent_book(self):
-        collector = BooksCollector()
+    def test_get_book_genre_non_existent_book(collector):
         assert collector.get_book_genre("Какая-то книга") is None
 
 
     # Тесты для get_books_with_specific_genre
-    def test_get_books_by_genre(self):
-        collector = BooksCollector()
+    def test_get_books_by_genre(collector):
+        collector.add_new_book("Чебурашка")
+        collector.set_book_genre("Чебурашка", "Мультфильмы")
         collector.add_new_book("Бойцовский клуб")
         collector.set_book_genre("Бойцовский клуб", "Фантастика")
         collector.add_new_book("Американские боги")
@@ -90,8 +88,7 @@ class TestBooksCollector:
 
 
     # Тесты для get_books_for_children
-    def test_get_children_books(self):
-        collector = BooksCollector()
+    def test_get_children_books(collector):
         collector.add_new_book("Лунтик")
         collector.set_book_genre("Лунтик", "Мультфильмы")
         collector.add_new_book("Фиксики")
@@ -100,15 +97,13 @@ class TestBooksCollector:
 
 
     # Тесты для add_book_in_favorites
-    def test_add_to_favorites(self):
-        collector = BooksCollector()
+    def test_add_to_favorites(collector):
         collector.add_new_book("Букварь")
         collector.add_book_in_favorites("Букварь")
         assert "Букварь" in collector.favorites
 
 
-    def test_add_duplicate_to_favorites(self):
-        collector = BooksCollector()
+    def test_add_duplicate_to_favorites(collector):
         collector.add_new_book("Букварь")
         collector.add_book_in_favorites("Букварь")
         collector.add_book_in_favorites("Букварь")
@@ -116,8 +111,7 @@ class TestBooksCollector:
 
 
     # Тесты для delete_book_from_favorites
-    def test_delete_from_favorites(self):
-        collector = BooksCollector()
+    def test_delete_from_favorites(collector):
         collector.add_new_book("Букварь")
         collector.add_book_in_favorites("Букварь")
         collector.delete_book_from_favorites("Букварь")
@@ -125,8 +119,7 @@ class TestBooksCollector:
 
 
     # Тесты для get_list_of_favorites_books
-    def test_get_favorites_list(self):
-        collector = BooksCollector()
+    def test_get_favorites_list(collector):
         collector.add_new_book("Букварь")
         collector.add_new_book("Метро")
         collector.add_book_in_favorites("Букварь")
