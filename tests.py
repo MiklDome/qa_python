@@ -89,6 +89,8 @@ class TestBooksCollector:
 
     # Тесты для get_books_for_children
     def test_get_children_books(collector):
+        collector.add_new_book("ЛунтикУжасы")
+        collector.set_book_genre("ЛунтикУжасы", "Ужасы")
         collector.add_new_book("Лунтик")
         collector.set_book_genre("Лунтик", "Мультфильмы")
         collector.add_new_book("Фиксики")
