@@ -86,6 +86,23 @@ class TestBooksCollector:
         collector.set_book_genre("Американские боги", "Фантастика")
         assert collector.get_books_with_specific_genre("Фантастика") == ["Бойцовский клуб", "Американские боги"]
 
+    #Тесты для get_books_genre
+    def test_get_books_genre_empty(collector):
+        assert collector.get_books_genre() == {}
+
+    def test_get_books_genre_with_books(collector):
+        collector.add_new_book("Чебурашка")
+        collector.set_book_genre("Чебурашка", "Мульфильм")
+        collector.add_new_book("Американские боги")
+        collector.set_book_genre("Американские боги", "Фантастика")
+
+        expected_result = {
+            "Чебурашка": "Мультфильм",
+            "Американские боги": "Фантастика"
+        }
+
+        assert collector.get_books_genre() == expected_result
+
 
     # Тесты для get_books_for_children
     def test_get_children_books(collector):
